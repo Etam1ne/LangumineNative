@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ec770843-241c-4d11-a76c-91f55c4fa229"
+      }
+    },
+    "owner": "etamine"
   }
 }
