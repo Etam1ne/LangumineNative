@@ -7,15 +7,22 @@ export const Navbar = ({navigation}) => {
         <StyledNavBar>
             <Pressable onPress={() => navigation.navigate("Cards")}>
                 <StyledImage
-                    height="50px" 
-                    width="50px" 
+                    height="40px" 
+                    width="40px" 
                     source={require('../images/cards.png')}
+                />
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate("Test")}>
+                <StyledImage 
+                    height="40px" 
+                    width="40px" 
+                    source={require('../images/test.png')}
                 />
             </Pressable>
             <Pressable onPress={() => navigation.navigate("Import")}>
                 <StyledImage 
-                    height="50px" 
-                    width="50px" 
+                    height="40px" 
+                    width="40px" 
                     source={require('../images/import.png')}
                 />
             </Pressable>

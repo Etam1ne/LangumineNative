@@ -2,6 +2,7 @@ import { ThemeProvider } from 'styled-components/native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Cards } from './screens/Cards'
+import { Test } from './screens/Test';
 import { Import } from './screens/Import';
 import { Provider } from 'react-redux';
 import { store } from './screens/store';
@@ -26,6 +27,10 @@ export default function App() {
             <Stack.Screen 
               name='Cards'
               component={Cards}
+            />
+            <Stack.Screen 
+              name='Test'
+              component={Test}
             />
             <Stack.Screen 
               name='Import'

@@ -1,4 +1,4 @@
-import { StyledCard, GridButtons} from "../styles/Cards.styled";
+import { StyledCard, RowButtons} from "../styles/Cards.styled";
 import { StyledImage } from "../styles/StyledImage.style";
 import { StyledButton } from "../styles/Button.styled";
 import { useRef, useEffect } from "react"
@@ -18,7 +18,7 @@ export const BasicCard = ({ table, currentCard, previousCard, nextCard }: BasicC
             <Text>
                 {table[currentCard][0]} - {table[currentCard][1]}
             </Text>
-            <GridButtons>
+            <RowButtons>
                 <StyledButton onPress={previousCard}>
                     <StyledImage 
                         height="40px" 
@@ -33,7 +33,7 @@ export const BasicCard = ({ table, currentCard, previousCard, nextCard }: BasicC
                         source={require('../images/arrowRight.png')}
                     />
                 </StyledButton>
-            </GridButtons>
+            </RowButtons>
         </StyledCard>
     );
 }

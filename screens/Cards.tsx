@@ -4,7 +4,8 @@ import { BasicCard } from "../components/BasicCard";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { useState } from "react";
 import { selectTable } from "./store";
-import { Text } from "react-native";
+import { Button, Text } from "react-native";
+import { TestCard } from "../components/TestCard";
 
 export const Cards = ({navigation}) => {
     const table: string[][] = useAppSelector(selectTable);
@@ -39,20 +40,21 @@ export const Cards = ({navigation}) => {
                     previousCard={previousCard}
                     />
                 );
-            // case "Learn":
-            //     return (
-            //         <LearnCard 
-            //         table={table}
-            //         currentCard={currentCard}
-            //         setCurrentCard={setCurrentCard}
-            //         />
-            //     );
+            case "Learn":
+                return (
+                    <TestCard 
+                    table={table}
+                    currentCard={currentCard}
+                    setCurrentCard={setCurrentCard}
+                    />
+                );
         }
     }
 
     return (
         <AppContainer>
             <Container>
+                <Button title="switch" onPress={() => setCardType("Learn")}/>
                 {switchCardType()}
             </Container>
             <Navbar navigation={navigation} />
