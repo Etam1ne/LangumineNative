@@ -1,17 +1,17 @@
 import { AppContainer, Container } from "../styles/Container.styled";
-import { Navbar } from "../components/Navbar";
-import { BasicCard } from "../components/BasicCard";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { useState } from "react";
 import { selectTable } from "./store";
-import { Button, Text } from "react-native";
-import { TestCard } from "../components/TestCard";
+import { Text } from "react-native";
+import { StyledCard, RowButtons } from "../styles/Cards.styled";
+import { StyledButton } from "../styles/Button.styled";
+import { StyledImage } from "../styles/StyledImage.style";
 
-export const Cards = ({navigation}) => {
+export const Cards = () => {
+    
     const table: string[][] = useAppSelector(selectTable);
 
     const [currentCard, setCurrentCard] = useState<number>(0);
-    const [cardType, setCardType] = useState<string>("Basic");
 
     const nextCard = () => {
         if (currentCard === table.length - 1) {
@@ -29,35 +29,32 @@ export const Cards = ({navigation}) => {
         }
     }
 
-    const switchCardType = () => {
-        switch (cardType) {
-            case "Basic":
-                return (
-                    <BasicCard 
-                    table={table}
-                    currentCard={currentCard}
-                    nextCard={nextCard}
-                    previousCard={previousCard}
-                    />
-                );
-            case "Learn":
-                return (
-                    <TestCard 
-                    table={table}
-                    currentCard={currentCard}
-                    setCurrentCard={setCurrentCard}
-                    />
-                );
-        }
-    }
-
     return (
         <AppContainer>
             <Container>
-                <Button title="switch" onPress={() => setCardType("Learn")}/>
-                {switchCardType()}
+                <StyledCard>
+                    <Text>{currentCard + 1}</Text>
+                    <Text>
+                        {table[currentCard][0]} - {table[currentCard][1]}
+                    </Text>
+                    <RowButtons>
+                        <StyledButton onPress={previousCard}>
+                            <StyledImage 
+                                height="40px" 
+                                width="40px" 
+                                source={require('../images/arrowLeft.png')}
+                            />
+                        </StyledButton>
+                        <StyledButton onPress={nextCard}>
+                            <StyledImage 
+                                height="40px" 
+                                width="40px" 
+                                source={require('../images/arrowRight.png')}
+                            />
+                        </StyledButton>
+                    </RowButtons>
+                </StyledCard>
             </Container>
-            <Navbar navigation={navigation} />
         </AppContainer>
     );
 }

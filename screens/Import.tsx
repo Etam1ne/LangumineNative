@@ -5,33 +5,35 @@ import { selectTable, loadTable } from "./store";
 import { useRef, useState} from "react";
 import { read, readFile, utils, WorkBook, WorkSheet } from "xlsx";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker"
-import { NativeEventEmitter, Pressable, Button } from "react-native";
+import { NativeEventEmitter, Pressable, Text, Button } from "react-native";
 import * as FileSystem from 'expo-file-system';
 
 export const Import = ({navigation}) => {
     const table = useAppSelector(selectTable)
     const dispatch = useAppDispatch();
 
-    const [file, setFile] = useState<string[][]>([[]]);
+    //const [file, setFile] = useState<string[][]>([[]]);
+    const [fileName, setFileName] = useState<string>("no file");
 
     const columns = useRef<string[]>(["Word", "Translation"]);
     const wordIndex = useRef<number>(0);
     const translationIndex = useRef<number>(1);
 
-    const handleSubmit = () => {
-        const filteredSheet: string[][] = file
-        .filter( (data: string[], index: number) => {
-            if (!data[wordIndex.current] || !data[translationIndex.current] ||index === 0) return false
-            return true;
-          })
-        .map((data: string[]) => {
-            return [ data[wordIndex.current], data[translationIndex.current]]
-        });
-        dispatch(loadTable(filteredSheet))
-        console.log(table)
-    }
+    //const handleSubmit = () => {
+    //    const filteredSheet: string[][] = file
+    //    .filter( (data: string[], index: number) => {
+    //        if (!data[wordIndex.current] || !data[translationIndex.current] ||index === 0) return false
+    //        return true;
+    //      })
+    //    .map((data: string[]) => {
+    //        return [ data[wordIndex.current], data[translationIndex.current]]
+    //    });
+    //    dispatch(loadTable(filteredSheet))
+    //    console.log(table)
+    //}
 
     const handleFileUpload = async () => {
+        let file: string[][];
         try {
             const response: DocumentResult = await getDocumentAsync({
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -46,14 +48,24 @@ export const Import = ({navigation}) => {
                 const jsonData: string[][] = utils.sheet_to_json(worksheet, {
                     header: 1
                 })
-                setFile(jsonData);
+                file = jsonData;
                 columns.current = jsonData[0];
-                console.log(jsonData)
+                setFileName(response.name)
             }
         }
         catch (error) {
             console.log(error)
         }
+
+        const filteredSheet: string[][] = file
+        .filter( (data: string[], index: number) => {
+            if (!data[wordIndex.current] || !data[translationIndex.current] ||index === 0) return false
+            return true;
+          })
+        .map((data: string[]) => {
+            return [ data[wordIndex.current], data[translationIndex.current]]
+        });
+        dispatch(loadTable(filteredSheet))
     }
 
     const handleSelector = (e: React.ChangeEvent<HTMLSelectElement>,column: React.MutableRefObject<number>) => {
@@ -62,11 +74,11 @@ export const Import = ({navigation}) => {
     
     return (
         <AppContainer>
-                <Container>
-                    <Button title="upload" onPress={handleFileUpload}/>
-                    <Button title="submit" onPress={handleSubmit}/>
-                </Container>
-            <Navbar navigation={navigation}/>
+            <Container>
+                <Button title="upload" onPress={handleFileUpload}/>
+                <Text>{fileName}</Text>
+            </Container>
         </AppContainer>
+        
     );
 }

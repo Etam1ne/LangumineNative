@@ -5,7 +5,7 @@ interface tableState {
 }
 
 const initialState: tableState = {
-    value: [[]]
+    value: [["Word", "Translation"]]
 }
 const tableSlice = createSlice({
     name: "table",
