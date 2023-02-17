@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-export const StyledCard = styled.View`
+export const StyledCard = styled.Pressable`
     height: 40%;
     width: 90%;
     flex-direction: column;
@@ -20,5 +20,10 @@ export const RowButtons = styled.View`
 export const ColumnButtons = styled.View`
     align-self: stretch;
     flex-direction: column;
-    justify-content: space-around;
+`
+
+export const Stats = styled.View`
+    width: 90%;
+    flex-direction: row;
+    justify-content: space-between;
 `

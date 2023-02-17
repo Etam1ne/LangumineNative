@@ -3,6 +3,7 @@ import styled from "styled-components/native"
 export const StyledButton = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
+    padding: 10px;
     border: 1px solid ${props => props.theme.colors.green};
     border-radius: 10px;
     color: ${props => props.theme.colors.green};

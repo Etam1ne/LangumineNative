@@ -1,7 +1,6 @@
 import { AppContainer, Container } from "../styles/Container.styled";
-import { Navbar } from "../components/Navbar";
 import { Pressable, Text } from "react-native";
-import { StyledCard, ColumnButtons } from "../styles/Cards.styled";
+import { StyledCard, ColumnButtons, Stats } from "../styles/Cards.styled";
 import { StyledButton } from "../styles/Button.styled";
 import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -24,15 +23,20 @@ export const Test = ({navigation}) => {
 
     const [currentCard, setCurrentCard] = useState<number>(0);
     const [randomizedSet, setRandomizedSet] = useState<Question[]>([]);
+    const [rightAnswers, setRightAnswers] = useState<number>(0);
+    const [wrongAnswers, setWrongAnswers] = useState<number>(0);
 
     const isAnswered = useRef<boolean>(false);
 
     const checkAnswer = (currentCard: number, answer: string) => {
         if (randomizedSet[currentCard].answers.indexOf(answer) === randomizedSet[currentCard].rightIndex) {
             isAnswered.current = true;
+            setRightAnswers(rightAnswers + 1)
             nextCard();
         }
         else {
+            isAnswered.current = true;
+            setWrongAnswers(wrongAnswers + 1)
         }
     }
 
@@ -89,30 +93,32 @@ export const Test = ({navigation}) => {
     return (
         <AppContainer>
             <Container>
-                <Pressable onPress={() => isAnswered.current ? nextCard() : undefined}>
-                    <StyledCard>
-                        {randomizedSet.length !== 0 && 
-                        <>
-                            <Text>{currentCard + 1}</Text>
+                <Stats>
+                    <Text>{rightAnswers} / {table.length}</Text>
+                    <Text>Mistakes: {wrongAnswers}</Text>
+                </Stats>
+                <StyledCard onPress={() => isAnswered.current ? nextCard() : undefined}>
+                    {randomizedSet.length !== 0 && 
+                    <>
+                        <Text>{currentCard + 1}</Text>
 
-                            <Text>{randomizedSet[currentCard].word}</Text>
+                        <Text>{randomizedSet[currentCard].word}</Text>
 
-                            <ColumnButtons>
-                                {
-                                    randomizedSet[currentCard].answers.map((answer, index) => (
-                                        <StyledButton 
-                                        key={index} 
-                                        onPress={() => checkAnswer(currentCard, answer)}
-                                        >
-                                            <Text>{answer}</Text>
-                                        </StyledButton>
-                                    ))
-                                }
-                            </ColumnButtons>
-                        </>
-                        }
-                    </StyledCard>
-                </Pressable>
+                        <ColumnButtons>
+                            {
+                                randomizedSet[currentCard].answers.map((answer, index) => (
+                                    <StyledButton 
+                                    key={index} 
+                                    onPress={() => checkAnswer(currentCard, answer)}
+                                    >
+                                        <Text>{answer}</Text>
+                                    </StyledButton>
+                                ))
+                            }
+                        </ColumnButtons>
+                    </>
+                    }
+                </StyledCard>
             </Container>
         </AppContainer>
     );

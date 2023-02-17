@@ -1,36 +1,24 @@
 import { AppContainer, Container } from "../styles/Container.styled";
-import { Navbar } from "../components/Navbar";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 import { selectTable, loadTable } from "./store";
 import { useRef, useState} from "react";
-import { read, readFile, utils, WorkBook, WorkSheet } from "xlsx";
+import { read, utils, WorkBook, WorkSheet } from "xlsx";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker"
-import { NativeEventEmitter, Pressable, Text, Button } from "react-native";
+import { Text, Button } from "react-native";
 import * as FileSystem from 'expo-file-system';
+import { StyledScrollView, StyledTableData, StyledTableRow } from "../styles/Table.styled";
 
-export const Import = ({navigation}) => {
+export const Import = () => {
     const table = useAppSelector(selectTable)
     const dispatch = useAppDispatch();
 
-    //const [file, setFile] = useState<string[][]>([[]]);
     const [fileName, setFileName] = useState<string>("no file");
 
     const columns = useRef<string[]>(["Word", "Translation"]);
     const wordIndex = useRef<number>(0);
     const translationIndex = useRef<number>(1);
 
-    //const handleSubmit = () => {
-    //    const filteredSheet: string[][] = file
-    //    .filter( (data: string[], index: number) => {
-    //        if (!data[wordIndex.current] || !data[translationIndex.current] ||index === 0) return false
-    //        return true;
-    //      })
-    //    .map((data: string[]) => {
-    //        return [ data[wordIndex.current], data[translationIndex.current]]
-    //    });
-    //    dispatch(loadTable(filteredSheet))
-    //    console.log(table)
-    //}
+    const tableInitialState: string[][] = [["Word", "Translation"]];
 
     const handleFileUpload = async () => {
         let file: string[][];
@@ -77,6 +65,16 @@ export const Import = ({navigation}) => {
             <Container>
                 <Button title="upload" onPress={handleFileUpload}/>
                 <Text>{fileName}</Text>
+                <StyledScrollView>
+                    {table === tableInitialState ? <></> : 
+                    table.map((data, index) => (
+                            <StyledTableRow key={index}>
+                                <StyledTableData>{data[0]}</StyledTableData>
+                                <StyledTableData>{data[1]}</StyledTableData>
+                            </StyledTableRow>
+                    ))
+                    }
+                </StyledScrollView>
             </Container>
         </AppContainer>
         
